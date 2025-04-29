@@ -22,14 +22,8 @@ export default function ChatInterface() {
     updateSessionTitle,
   } = useChatStore();
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const currentSession = sessions.find((s) => s.id === currentChatId);
   const messages = currentSession?.messages || [];
-
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -108,7 +102,6 @@ export default function ChatInterface() {
       <ChatHeader currentChatId={currentChatId} />
 
       <ChatMessages messages={messages} isLoading={isLoading} />
-      <div ref={messagesEndRef} />
 
       <ChatInput
         input={input}

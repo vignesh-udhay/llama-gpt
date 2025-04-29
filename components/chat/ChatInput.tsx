@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Loader2, Send } from "lucide-react";
-import { KeyboardEvent, useRef } from "react";
+import { KeyboardEvent, useRef, useEffect } from "react";
 import { motion } from "motion/react";
 
 interface ChatInputProps {
@@ -19,6 +19,13 @@ export default function ChatInput({
 }: ChatInputProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Focus input when isLoading changes (after submission)
+  useEffect(() => {
+    if (!isLoading) {
+      inputRef.current?.focus();
+    }
+  }, [isLoading]);
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey && !isLoading) {

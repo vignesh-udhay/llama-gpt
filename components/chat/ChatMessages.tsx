@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Bot } from "lucide-react";
 import MessageItem from "./MessageItem";
 import TypingIndicator from "./TypingIndicator";
+import { useEffect, useRef } from "react";
 
 interface ChatMessagesProps {
   messages: Message[];
@@ -33,6 +34,14 @@ export default function ChatMessages({
   messages,
   isLoading,
 }: ChatMessagesProps) {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    console.log("messages", messages);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <ScrollArea className="flex-1 mb-4 p-4 border rounded-xl shadow-sm bg-gray-50/50 dark:bg-gray-900/10 w-full overflow-hidden">
       <motion.div
@@ -71,6 +80,7 @@ export default function ChatMessages({
           </AnimatePresence>
         )}
       </motion.div>
+      <div ref={messagesEndRef} />
     </ScrollArea>
   );
 }
